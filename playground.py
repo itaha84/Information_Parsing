@@ -1,6 +1,7 @@
 import csv
 import constants
 import parse_utilities
+from datetime import datetime
 import itertools
 
 # for name in constants.file_names:
@@ -57,26 +58,17 @@ import itertools
 #     print("\n\n")
 
 
-# Testing combo_nt_header_gen to generate combo NT fields
-# print(parse_utilities.combo_nt_header_gen(constants.file_names, constants.compress_list))
-
-# Testing chaining iter_file to generate 4 chained NamedTuples
-# y = (list(itertools.chain(zip(parse_utilities.iter_file(constants.personal_file, constants.personal_parser,constants.personal_nt),
-#                                                                    parse_utilities.iter_file(constants.vehicles_file, constants.vehicle_parser,constants.vehicle_nt),
-#                                                                    parse_utilities.iter_file(constants.employment_file, constants.employment_parser,constants.employment_nt),
-#                                                                    parse_utilities.iter_file(constants.updated_status, constants.status_parser,constants.status_nt)))))
-# print(list(itertools.chain.from_iterable(y[0])))
-# print(list(itertools.compress(itertools.chain.from_iterable(y[0]), constants.compress_list)))
-
-
-# y = (itertools.chain(zip(parse_utilities.iter_file(constants.personal_file, constants.personal_parser,constants.personal_nt),
-#                                                                    parse_utilities.iter_file(constants.vehicles_file, constants.vehicle_parser,constants.vehicle_nt),
-#                                                                    parse_utilities.iter_file(constants.employment_file, constants.employment_parser,constants.employment_nt),
-#                                                                    parse_utilities.iter_file(constants.updated_status, constants.status_parser,constants.status_nt))))
-# print(next(y))
-
-gen = parse_utilities.combo_nt_gen(constants.file_names, constants.parser_functions, constants.nt_names, constants.compress_list)
+gen = parse_utilities.combo_nt_gen(constants.file_names,
+                                   constants.parser_functions, constants.nt_names, constants.compress_list)
 # print(parse_utilities.combo_nt_header_gen(constants.file_names, constants.compress_list))
 for i in range(5):
 	print(next(gen))
 
+print("_______________________________________")
+
+cutoff_date = datetime(2017,3,1)
+gen_filtered = parse_utilities.combo_nt_gen_filtered(constants.file_names, constants.parser_functions,
+                                                     constants.nt_names, constants.compress_list,
+                                                     key=lambda data: data.last_updated < cutoff_date)
+for row in gen_filtered:
+	print(row)

@@ -52,3 +52,9 @@ def combo_nt_gen(files, parsers, nt_names, sel):
 	for row in merged_tuple:
 		compressed_row = itertools.compress(row, sel)
 		yield Data(*compressed_row)
+
+
+def combo_nt_gen_filtered(files, parsers, nt_names, sel, *, key=None):
+	iter_combo = combo_nt_gen(files, parsers, nt_names, sel)
+	yield from filter(key, iter_combo)
+
