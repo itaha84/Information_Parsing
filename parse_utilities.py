@@ -1,5 +1,4 @@
 import csv
-# import constants
 import itertools
 from datetime import datetime
 from collections import namedtuple
@@ -54,7 +53,9 @@ def combo_nt_gen(files, parsers, nt_names, sel):
 		yield Data(*compressed_row)
 
 
-def combo_nt_gen_filtered(files, parsers, nt_names, sel, *, key=None):
+def combo_nt_gen_filtered(files, parsers, nt_names, sel, *, filter_key=None, sort_key=None):
 	iter_combo = combo_nt_gen(files, parsers, nt_names, sel)
-	yield from filter(key, iter_combo)
+	iter_combo_filtered = filter(filter_key, iter_combo)
+	yield from iter_combo_filtered
+
 
