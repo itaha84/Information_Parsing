@@ -56,6 +56,13 @@ def combo_nt_gen(files, parsers, nt_names, sel):
 def combo_nt_gen_filtered(files, parsers, nt_names, sel, *, filter_key=None, sort_key=None):
 	iter_combo = combo_nt_gen(files, parsers, nt_names, sel)
 	iter_combo_filtered = filter(filter_key, iter_combo)
-	yield from iter_combo_filtered
+	if not sort_key:
+		yield from iter_combo_filtered
+	else:
+		iter_combo_filtered_sorted = sorted(iter_combo_filtered, key=sort_key)
+		iter_combo_filtered_sorted_grouped = itertools.groupby(iter_combo_filtered_sorted, key=sort_key)
+		yield from ((row[0], len(list(row[1]))) for row in iter_combo_filtered_sorted_grouped)
+		# yield from iter_combo_filtered_sorted_grouped
+
 
 

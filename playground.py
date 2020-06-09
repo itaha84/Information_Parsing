@@ -67,30 +67,30 @@ import itertools
 # #
 # # # print("_______________________________________")
 
-cutoff_date = datetime(2017, 3, 1)
+# cutoff_date = datetime(2017, 3, 1)
 
 
-def group_key(row):
-    return row.gender, row.vehicle_make
+# def group_key(row):
+#     return row.gender, row.vehicle_make
 
 
-data = parse_utilities.combo_nt_gen_filtered(constants.file_names, constants.parser_functions,
-                                             constants.nt_names,  constants.compress_list,
-                                             filter_key=lambda data: data.last_updated >= cutoff_date)
+# data = parse_utilities.combo_nt_gen_filtered(constants.file_names, constants.parser_functions,
+#                                              constants.nt_names,  constants.compress_list,
+#                                              filter_key=lambda data: data.last_updated >= cutoff_date)
 
-sorted_data = sorted(data, key=group_key)
-
-grouped_data_f = itertools.groupby(sorted_data, key=group_key)
-grouped_data_m = itertools.groupby(sorted_data, key=group_key)
-
-group_f = (row for row in grouped_data_f if row[0][0] == "Female")
-group_m = (row for row in grouped_data_m if row[0][0] == "Male")
-
-result_f = ((row[0][1], len(list(row[1]))) for row in group_f)
-result_m = ((row[0][1], len(list(row[1]))) for row in group_m)
-
-for i in result_f:
-    print(i)
+# sorted_data = sorted(data, key=group_key)
+#
+# grouped_data_f = itertools.groupby(sorted_data, key=group_key)
+# grouped_data_m = itertools.groupby(sorted_data, key=group_key)
+#
+# group_f = (row for row in grouped_data_f if row[0][0] == "Female")
+# group_m = (row for row in grouped_data_m if row[0][0] == "Male")
+#
+# result_f = ((row[0][1], len(list(row[1]))) for row in group_f)
+# result_m = ((row[0][1], len(list(row[1]))) for row in group_m)
+#
+# for i in result_f:
+#     print(i)
 
 # for row in group_f:
 #     print(row)
@@ -99,3 +99,12 @@ for i in result_f:
 #
 # for row in group_m:
 #     print(row)
+
+
+data = parse_utilities.combo_nt_gen_filtered(constants.file_names, constants.parser_functions,
+                                             constants.nt_names,  constants.compress_list,
+                                             filter_key=lambda row: row.gender == "Male",
+                                             sort_key= lambda row: row.vehicle_make )
+
+for row in data:
+    print(list(row))
